@@ -21,10 +21,6 @@ RCT_EXPORT_METHOD(measure:(NSDictionary *)options
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-    if ([options objectForKey:@"width"] == nil) {
-      reject(@"invalid_width", @"missing required width property", nil);
-      return;
-    }
     if ([options objectForKey:@"texts"] == nil) {
       reject(@"invalid_texts", @"missing required texts property", nil);
       return;
@@ -34,7 +30,6 @@ RCT_EXPORT_METHOD(measure:(NSDictionary *)options
       return;
     }
 
-    float width = [RCTConvert float:options[@"width"]];
     NSArray *texts = [RCTConvert NSArray:options[@"texts"]];
     CGFloat fontSize = [RCTConvert CGFloat:options[@"fontSize"]];
 
@@ -43,7 +38,7 @@ RCT_EXPORT_METHOD(measure:(NSDictionary *)options
 
     for (NSString* text in texts) {
         NSTextStorage *textStorage = [[NSTextStorage alloc] initWithString:text];
-        NSTextContainer *textContainer = [[NSTextContainer alloc] initWithSize: CGSizeMake(width, FLT_MAX)];
+        NSTextContainer *textContainer = [[NSTextContainer alloc] initWithSize: CGSizeMake(FLT_MAX, FLT_MAX)];
         NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
 
         [layoutManager addTextContainer:textContainer];
@@ -55,7 +50,10 @@ RCT_EXPORT_METHOD(measure:(NSDictionary *)options
         (void) [layoutManager glyphRangeForTextContainer:textContainer];
         CGRect resultRect = [layoutManager usedRectForTextContainer:textContainer];
 
-        [results addObject:[NSNumber numberWithFloat:resultRect.size.height]];
+        [results addObject:@{
+          @"width":[NSNumber numberWithFloat:resultRect.size.width],
+          @"height":[NSNumber numberWithFloat:resultRect.size.height]
+        }];
     }
     resolve(results);
 }
