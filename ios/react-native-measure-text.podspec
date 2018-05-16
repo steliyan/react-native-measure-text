@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.description  = <<-DESC
                   RNMeasureText
                    DESC
-  s.homepage     = ""
+  s.homepage     = "https://github.com/steliyan/react-native-measure-text#readme"
   s.license      = "MIT"
   # s.license      = { :type => "MIT", :file => "FILE_LICENSE" }
   s.author             = { "author" => "author@domain.cn" }
