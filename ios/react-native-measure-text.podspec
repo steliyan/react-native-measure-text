@@ -1,6 +1,6 @@
 
 Pod::Spec.new do |s|
-  s.name         = "RNMeasureText"
+  s.name         = "react-native-measure-text"
   s.version      = "1.0.0"
   s.summary      = "RNMeasureText"
   s.description  = <<-DESC
