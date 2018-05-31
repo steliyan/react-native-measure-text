@@ -21,6 +21,8 @@ RCT_EXPORT_METHOD(measure:(NSDictionary *)options
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
+    UIFont *font = nil;
+
     if ([options objectForKey:@"texts"] == nil) {
       reject(@"invalid_texts", @"missing required texts property", nil);
       return;
@@ -29,12 +31,17 @@ RCT_EXPORT_METHOD(measure:(NSDictionary *)options
       reject(@"invalid_fontSize", @"missing required fontSize property", nil);
       return;
     }
+    CGFloat fontSize = [RCTConvert CGFloat:options[@"fontSize"]];
+    
+    if([options objectForKey:@"fontFamily"] == nil){
+      font = [UIFont systemFontOfSize: fontSize];
+    } else {
+      font = [UIFont fontWithName:options[@"fontFamily"] size:fontSize];
+    }
 
     NSArray *texts = [RCTConvert NSArray:options[@"texts"]];
-    CGFloat fontSize = [RCTConvert CGFloat:options[@"fontSize"]];
 
     NSMutableArray* results = [[NSMutableArray alloc] init];
-    UIFont *font = [UIFont systemFontOfSize: fontSize];
 
     for (NSString* text in texts) {
         NSTextStorage *textStorage = [[NSTextStorage alloc] initWithString:text];
